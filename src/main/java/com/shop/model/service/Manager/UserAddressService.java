@@ -1,0 +1,27 @@
+package com.shop.model.service.Manager;
+
+import com.shop.model.domain.User_address;
+import com.shop.model.mapper.UserAddressMapper;
+import com.shop.model.service.UserAddressManageInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service("userAddressService")
+@Transactional
+@CacheConfig(cacheNames = {UserAddressManageInterface.cacheName})
+public class UserAddressService implements UserAddressManageInterface{
+    @Autowired
+    private UserAddressMapper userAddressMapper;
+
+    public void addUserAddress(Long userId, Long addressId) {
+        userAddressMapper.addUserAddress(userId, addressId);
+    }
+
+    public List<User_address> getAddressList(Long userId) {
+        return userAddressMapper.getAddressList(userId);
+    }
+}
