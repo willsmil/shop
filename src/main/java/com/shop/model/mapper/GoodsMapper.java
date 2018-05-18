@@ -11,9 +11,9 @@ import java.util.List;
 public interface GoodsMapper {
 
     @Insert("insert into goods(goods_name, store_id, price, " +
-            "info, date, count, picture, promotion_id)" +
-            " values (#{goods_name}, #{store_id}, #{price}, " +
-            "#{info}, #{date}, #{count}, #{picture}, #{promotion_id})")
+            "info, date, count, picture, promotion_id, video)" +
+            " values (#{goods_name}, #{store_id}, #{price}, #{info}," +
+            " #{date}, #{count}, #{picture}, #{promotion_id}, #{video})")
     @Options(keyProperty="goods_id", useGeneratedKeys=true )
     Long addGoods(Goods goods);
 
@@ -40,7 +40,7 @@ public interface GoodsMapper {
 
     @Update("update goods set sold_number = #{sold_number}, goods_name=#{goods_name}," +
             "price=#{price},info=#{info},count=#{count},picture=#{picture}," +
-            "promotion_id=#{promotion_id} " +
+            "promotion_id=#{promotion_id}, video=#{video} " +
             "where goods_id=#{goods_id}")
     void changeGoods(Goods goods);
 

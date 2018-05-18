@@ -15,6 +15,15 @@ public class Goods implements Serializable{
   private Long count;
   private String picture;
   private Long promotion_id;
+  private String video;
+
+  public String getVideo() {
+    return video;
+  }
+
+  public void setVideo(String video) {
+    this.video = video;
+  }
 
   public Long getStore_id() {
     return store_id;

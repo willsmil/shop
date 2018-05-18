@@ -65,6 +65,15 @@
                           id="goods_info"  required>${goods.info}</textarea>
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="goods_video" class="col-sm-2 control-label">视频简介</label>
+            <div class="col-sm-4">
+                <input id="goods_video" type="file" multiple class="file col-sm-4 control-label" name="goods_video">
+            </div>
+        </div>
+        <input type="hidden" name="video" id="video" value="${goods.video}">
+
         <div class="form-group">
             <label class="control-label col-sm-2">商品分类</label>
             <div class="col-sm-4">
@@ -158,6 +167,27 @@
         ;
 
     </script>
-
+    <script type="text/javascript">
+        // with plugin options
+        $("#goods_video").fileinput({
+            language: 'zh', //设置语言
+            showCaption: false,//是否显示标题
+            showUpload:true,//是否显示上传按钮
+            dropZoneEnabled: false,//是否显示拖拽区域
+            uploadUrl: '${ctx}/shop_admin/goodsVideo', //上传的地址
+            browseClass: "btn btn-primary", //按钮样式
+            previewFileType:['mp4','flv','avi','mov','mkv'],
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            allowedFileExtensions:['mp4','flv','avi','mov','mkv'],//接收的文件名后缀
+            maxFileCount: 1, //最大文件数量
+            required:true
+        }).on("fileuploaded", function(e, data) {
+            var res = data.response;
+            $("#content").text(res.msg);
+            $('#alert').modal();
+            $("#video").attr("value", res.path);
+        })
+        ;
+    </script>
 </rapid:override>
 <%@include file="../../shop/shop_admin/shop_base.jsp" %>

@@ -23,6 +23,4 @@ public interface GoodsManageInterface {
     List<Goods> getAllGoods(int page, int rows);
     List<Goods> getGoodsByStoreIdAndCateId(Long storeId, Long cateId, int page, int rows);
     List<Goods> searchGoodsByNameAndStoreId(String goodsName,Long storeId, int page, int rows);
-
-
 }

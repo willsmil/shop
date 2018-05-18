@@ -39,7 +39,7 @@
                     <h2>商品详情</h2>
                     <c:if test="${!empty goods}">
                         <div class="col-md-3 col-md-offset-1">
-                            <img src="${goods.picture}" alt="Loading Failed" width="200" height="300">
+                            <video src="${goods.video}" poster="${goods.picture}" controls width="200" height="300"></video>
                         </div>
                         <div class="col-sm-4" style="overflow: hidden">
                             <h3>名称：${goods.goods_name}</h3><br>

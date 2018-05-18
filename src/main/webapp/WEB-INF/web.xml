@@ -17,7 +17,6 @@
     </listener>
 
 
-
     <!-- Spring Security -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>

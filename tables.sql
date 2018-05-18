@@ -51,7 +51,8 @@ create table goods
   sold_number int default '0' null,
   count int null,
   picture varchar(100) null,
-  promotion_id int null
+  promotion_id int null,
+  videoUrl     varchar(500)    null
 )ENGINE = INNODB CHARACTER SET utf8
 ;
 

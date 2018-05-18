@@ -126,6 +126,9 @@ public class OrderController {
                 goods.setCount(num);
                 LoggingUtil.log(orderState1.getBuy_number());
                 LoggingUtil.log(goods.getSold_number());
+                if(goods.getSold_number() == null) {
+                    goods.setSold_number((long)0);
+                }
                 goods.setSold_number(goods.getSold_number() + orderState1.getBuy_number());
                 goodsManageInterface.changeGoods(goods);
             }

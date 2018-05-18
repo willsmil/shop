@@ -1,9 +1,11 @@
 package com.shop.controller.goods.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.shop.Utils.Cos;
 import com.shop.Utils.LoggingUtil;
 import com.shop.model.domain.*;
 import com.shop.model.service.*;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,13 +83,74 @@ public class GoodsAdminController {
                         i++;
                     }
                     else {
-                        FileUtils.writeByteArrayToFile(new File(dir, imageName), image.getBytes());
-                        json.put("path", "/images/upload/goods/"+getUserName(request)+"/" + imageName);//保存地址
-                        json.put("msg","保存成功！");
-                        break;
+                        //FileUtils.writeByteArrayToFile(new File(dir, imageName), image.getBytes());
+                        if(!file.getParentFile().exists()){
+                            if(!file.getParentFile().mkdirs()) {
+                              json.put("msg","创建目录失败！");
+                            }
+                        }
+                        if(file.createNewFile()) {
+                            image.transferTo(file);
+                            String url = Cos.upload("images/", dir+imageName);
+                            json.put("path", url);//保存地址
+                            //json.put("path", "/images/upload/goods/" + getUserName(request) + "/" + imageName);//保存地址
+                            json.put("msg", "保存成功！");
+                            break;
+                        }else {
+                            json.put("msg","创建文件失败");
+                        }
                     }
                 }
 
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            json.put("msg","保存失败，发生了未知错误..");
+        }
+        return json;
+    }
+    @RequestMapping("goodsVideo")
+    @ResponseBody
+    public JSONObject goodsVideo(@RequestParam("goods_video")MultipartFile video,
+                                 HttpServletRequest request){
+        JSONObject json = new JSONObject();
+        try {
+            //获取文件后缀名
+            String prefix = video.getOriginalFilename().substring(video.getOriginalFilename().lastIndexOf(".")+1);
+            //文件名是图片名+用户名+一个数字，并且保证不会重复
+            String videoName = getUserName(request) +"." + prefix;
+            if (!video.isEmpty()) {
+                //文件保存路径: /static/videos/upload/shop_image/
+                Integer i = 0;
+                String dir = request.getSession().getServletContext().getRealPath("/WEB-INF/static/videos/upload/goods/"+getUserName(request)+"/");
+                LoggingUtil.log(dir);
+                while(true){
+                    videoName = getUserName(request) + i.toString() +"." + prefix;
+                    LoggingUtil.log(video);
+                    File file = new File(dir, videoName);
+                    if (file.exists()){
+                        i++;
+                    }
+                    else {
+                        //FileUtils.writeByteArrayToFile(new File(dir, imageName), image.getBytes());
+                        if(!file.getParentFile().exists()){
+                            if(!file.getParentFile().mkdirs()) {
+                                json.put("msg","创建目录失败！");
+                            }
+                        }
+                        if(file.createNewFile()) {
+                            video.transferTo(file);
+                            String url = Cos.upload("videos/", dir+videoName);
+                            json.put("path", url);//保存地址
+                            //json.put("path", "/videos/upload/goods/" + getUserName(request) + "/" + videoName);//保存地址
+                            json.put("msg", "保存成功！");
+                            break;
+                        }else {
+                            json.put("msg","创建文件失败");
+                        }
+                    }
+                }
             }
         }
         catch (Exception e){
@@ -134,7 +198,7 @@ public class GoodsAdminController {
         return "redirect:goods_detail/" + goods.getGoods_id();
     }
 
-    @RequestMapping("/goods_delete/{goods_id}")
+    @RequestMapping("/delete_goods/{goods_id}")
     public String  goodsDelete(@PathVariable("goods_id")Long goodsId,
                                     RedirectAttributes model){
         goodsService.deleteGoods(goodsId);

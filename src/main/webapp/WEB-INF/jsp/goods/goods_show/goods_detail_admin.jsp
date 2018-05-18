@@ -15,10 +15,13 @@
         <div class="row">
             <h2>商品详情</h2>
             <c:if test="${!empty goods}">
-                <div class="col-md-3 col-md-offset-2">
+                <div class="col-md-2 col-md-offset-1">
                     <img src="${goods.picture}" alt="Loading Failed" width="200" height="300">
                 </div>
-                <div class="col-sm-5" style="overflow: hidden">
+                <div class="col-md-3 col-md-offset-1">
+                    <video src="${goods.video}" poster="${goods.picture}" controls width="200" height="300"></video>
+                </div>
+                <div class="col-sm-4" style="overflow: hidden">
                     <h3>名称：${goods.goods_name}</h3><br>
                     <h3>价格：${goods.price}</h3>
                     <p style="word-break: break-all">简介：${goods.info}</p>
