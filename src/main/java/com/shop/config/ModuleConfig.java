@@ -145,5 +145,6 @@ public class ModuleConfig {
         return redisCacheManager;
     }
 
+
 }
 
